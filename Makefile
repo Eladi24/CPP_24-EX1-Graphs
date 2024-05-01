@@ -1,10 +1,15 @@
 #!make -f
-
-CXX=clang
+# Compiler: clang++ (LLVM based)
+CXX=g++
+# Compiler flags -std=c++11: use C++11 standard, -Werror: treat warnings as errors, -Wsign-conversion: warn on sign conversion
 CXXFLAGS=-std=c++11 -Werror -Wsign-conversion
+# Valgrind flags -v: verbose, --leak-check=full: check for memory leaks, --show-leak-kinds=all: show all kinds of leaks. 
+# --error-exitcode=99: return error code 99 if there are leaks
 VALGRIND_FLAGS=-v --leak-check=full --show-leak-kinds=all  --error-exitcode=99
 
-SOURCES=Graph.cpp Algorithm.cpp TestCounter.cpp Test.cpp
+# Source files
+SOURCES=Graph.cpp Algorithms.cpp TestCounter.cpp Test.cpp
+# Object files
 OBJECTS=$(subst .cpp,.o,$(SOURCES))
 
 run: demo
