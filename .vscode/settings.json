@@ -61,5 +61,12 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "typeinfo": "cpp"
-    }
+    },
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/eladubuntu/Git Projects/CPP_24-EX1-Graphs",
+            "binaryPath": "/home/eladubuntu/Git Projects/CPP_24-EX1-Graphs/demo",
+            "binaryArgs": []
+        }
+    ]
 }

@@ -70,7 +70,7 @@ namespace ariel
         * @return void
         *
         */
-        static void floydWarshall(vector<vector<int>> &adjancencyMatrix);
+        static void floydWarshall(vector<vector<int>> &allDistances, vector<vector<int>> &next);
 
         /*
         * @brief
@@ -115,7 +115,18 @@ namespace ariel
         */
        static string paintGraph(Graph &graph, size_t c, vector<int> &color, size_t pos); 
 
+       /*
+       * @brief
+         * This function uses Bellman-Ford algorithm to check if the graph contains a negative cycle.
+         * @param graph - Graph object.
+         * @param src - source vertex.
+         * @param dist - array of distances.
+         * @return bool true if the graph contains a negative cycle, false otherwise.
+         */
+        static bool BellmanFord(Graph &graph, size_t src, vector<int> &dist);
+
     };
+    
 } // namespace ariel
 
 #endif
