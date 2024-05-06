@@ -75,12 +75,12 @@ namespace ariel
         /*
         * @brief
         * This function uses DFS algorithm to check if the graph is connected.
-        * @param graph - Graph object.
-        * @param v - source vertex.
+        * @param adjMat - adjacency matrix.
+        * @param src - source vertex.
         * @param visited - array of visited vertices.
         * @return void
         */
-        static void DFSIsConnected(Graph &graph, size_t src, vector<bool> &visited);
+        static void DFSIsConnected(vector<vector<int>> &adjMat, size_t src, vector<bool> &visited);
 
         /*
         * @brief
@@ -91,7 +91,7 @@ namespace ariel
         * @param recStack - array of vertices in the recursion stack.
         * @return bool true if the graph contains a cycle, false otherwise.
         */
-        static bool DFSIsContainsCycleDirected(Graph &graph, size_t v, vector<bool> &visited, vector<bool> &recStack);
+        static bool DFSIsContainsCycleDirected(Graph &graph, size_t v, vector<bool> &visited, vector<bool> &recStack, string &cycle);
 
         /*
         * @brief
@@ -102,7 +102,7 @@ namespace ariel
         * @param visited - array of visited vertices.
         * @return bool true if the graph contains a cycle, false otherwise.
         */
-        static bool DFSIsContainsCycleUndirected(Graph &graph, size_t v, int parent, vector<bool> &visited);
+        static bool DFSIsContainsCycleUndirected(Graph &graph, size_t v, int parent, vector<bool> &visited, string &cycle, vector<int> &parentVec);
 
         /*
         * @brief
@@ -123,7 +123,7 @@ namespace ariel
          * @param dist - array of distances.
          * @return bool true if the graph contains a negative cycle, false otherwise.
          */
-        static bool BellmanFord(Graph &graph, size_t src, vector<int> &dist);
+        static bool BellmanFord(Graph &graph, size_t src, vector<int> &dist, string &cycle);
 
     };
     

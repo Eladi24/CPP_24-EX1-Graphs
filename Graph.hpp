@@ -77,6 +77,22 @@ namespace ariel
         * @return vector<vector<int>> - adjacency matrix of the graph.
         */
         vector<vector<int>> getAdjacencyMatrix();
+
+        /*
+        * @brief
+        * This function returns the transpose of the adjacency matrix.
+        * @return vector<vector<int>> - transpose of the adjacency matrix.
+        */
+        vector<vector<int>> getTranspose();
+
+        /*
+        * @brief
+        * This function returns the degree of a vertex in the graph.
+        * @param vertex - vertex to check.
+        * @return size_t - degree of the vertex.
+        */
+
+        size_t getDegree(size_t vertex);
     };
 }
 

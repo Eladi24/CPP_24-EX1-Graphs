@@ -86,4 +86,19 @@ vector<vector<int>> Graph::getAdjacencyMatrix()
     return this->adjancencyMatrix;
 }
 
+vector<vector<int>> Graph::getTranspose()
+{
+    size_t n = this->adjancencyMatrix.size();
+    size_t m = this->adjancencyMatrix[0].size();
+    vector<vector<int>> transpose(n, vector<int>(m, 0));
+    for (size_t i = 0; i < n; i++)
+    {
+        for (size_t j = 0; j < m; j++)
+        {
+            transpose[j][i] = this->adjancencyMatrix[i][j];
+        }
+    }
+    return transpose;
+}
+
 

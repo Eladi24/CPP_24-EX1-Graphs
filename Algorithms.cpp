@@ -9,19 +9,59 @@ int Algorithms::isConnected(Graph &graph)
 {
     // Create a vector to store visited vertices and initialize all vertices as not visited.
     size_t v = graph.getVertices();
-    vector<bool> visited(v, false);
-    // Start DFS traversal from the first vertex.
-    DFSIsConnected(graph, 0, visited);
-    // Check is all vertices are visited.
-    for (size_t i = 0; i < v; i++)
+    vector<vector<int>> adjacencyMatrix = graph.getAdjacencyMatrix();
+    // If the graph is directed, check if it is strongly connected.
+    if (graph.isDirected())
+    
     {
-        // If there is a vertex that is not visited, the graph is not connected.
-        if (!visited[i])
+            // Mark all the vertices as not visited.
+            vector<bool> visited(v, false);
+            // Do a DFS traversal starting from the first vertex.
+            
+            DFSIsConnected(adjacencyMatrix, 0, visited);
+            // If DFS traversal does not visit all vertices, the graph is not connected.
+            for (size_t i = 0; i < v; i++)
+            {
+                if (!visited[i])
+                {
+                    return 0;
+                }
+            }
+
+            // Create a transpose of the adjacency matrix.
+            vector<vector<int>> transposeMat = graph.getTranspose();
+            // Mark all the vertices as not visited.
+            visited = vector<bool>(v, false);
+            // Do a DFS traversal starting from the first vertex.
+            // Starting vertex must be  same starting vertex in the original graph.
+            DFSIsConnected(adjacencyMatrix, 0, visited);
+            // If DFS traversal does not visit all vertices, the graph is not connected.
+            for (size_t i = 0; i < v; i++)
+            {
+                if (!visited[i])
+                {
+                    return 0;
+                }
+            }
+
+            return 1;
+    } 
+    else
+    {
+        // Mark all the vertices as not visited.
+        vector<bool> visited(v, false);
+        // Do a DFS traversal starting from the first vertex.
+        DFSIsConnected(adjacencyMatrix, 0, visited);
+        // If DFS traversal does not visit all vertices, the graph is not connected.
+        for (size_t i = 0; i < v; i++)
         {
-            return 0;
+            if (!visited[i])
+            {
+                return 0;
+            }
         }
+        return 1;
     }
-    return 1;
 }
 
 string Algorithms::shortestPath(Graph &graph, size_t src, size_t dest)
@@ -72,21 +112,26 @@ string Algorithms::shortestPath(Graph &graph, size_t src, size_t dest)
 bool Algorithms::isContainsCycle(Graph &graph)
 {
     vector<int>::size_type v = graph.getVertices();
+    string cycle = "The cycle is:";
+    
+    
     if (graph.isDirected())
     { // Mark all the vertices as not visited and not part of the recursion stack.
 
         vector<bool> visited(v, false);
         vector<bool> recStack(v, false);
-
+        
+        
         // Call the recursive helper function to detect cycle in different DFS trees.
         for (size_t i = 0; i < v; i++)
         {
-            if (!visited[i] && DFSIsContainsCycleDirected(graph, i, visited, recStack))
+            if (!visited[i] && DFSIsContainsCycleDirected(graph, i, visited, recStack, cycle))
             {
-                cout << "The cycle is: " + to_string(i) << endl;
+                cout << cycle << endl;
                 return true;
-            }
+            } 
         }
+        
         cout << "0" << endl;
         return false;
     }
@@ -94,19 +139,22 @@ bool Algorithms::isContainsCycle(Graph &graph)
     {
         // Mark all the vertices as not visited and not part of the recursion stack.
         vector<bool> visited(v, false);
-
+        // To store parent vertices in DFS tree.
+        vector<int> parentVec(v, -1); 
         // Call the recursive helper function to detect cycle in different DFS trees.
         for (size_t i = 0; i < v; i++)
         {
             if (!visited[i])
             {
-                if (DFSIsContainsCycleUndirected(graph, i, -1, visited))
+                if (DFSIsContainsCycleUndirected(graph, i, -1, visited, cycle, parentVec))
                 {
-                    cout << "The cycle is: " + to_string(i) << endl;
+                    
+                    cout << cycle << endl;
                     return true;
-                }
-            }
+                } 
+            }   
         }
+        
         cout << "0" << endl;
         return false;
     }
@@ -155,7 +203,7 @@ string Algorithms::isBipartite(Graph &graph)
         setB = setB.substr(0, setB.size() - 2);
     }
 
-    return "The graph is bipartite: A={" + setA + "}, B={" + setB + "}.";
+    return "The graph is bipartite: A={" + setA + "}, B={" + setB + "}";
 }
 
 string Algorithms::negativeCycle(Graph &graph)
@@ -163,32 +211,34 @@ string Algorithms::negativeCycle(Graph &graph)
     // Create a distance matrix.
     size_t V = graph.getVertices();
     vector<int> dist(V, INF);
+    string cycle = "The negative cycle is:";
 
     // call BellmanFord function to check if there is a negative cycle
-    if (BellmanFord(graph, 0, dist))
+    if (BellmanFord(graph, 0, dist, cycle))
     {
-        return "The graph contains a negative cycle.";
+        cout << "The graph contains a negative cycle." << endl;
+        return cycle;
     }
 
     return "The graph does not contain a negative cycle.";
 }
 
-void Algorithms::DFSIsConnected(Graph &graph, size_t src, vector<bool> &visited)
+void Algorithms::DFSIsConnected(vector<vector<int>> &adjMat, size_t src, vector<bool> &visited)
 {
     // Mark the current vertex as visited.
     visited[src] = true;
+    size_t V = adjMat.size();
     // Recur for all the vertices adjacent to this vertex.
-    // vector<int>::iterator i;
-    vector<vector<int>> adjancencyMatrix = graph.getAdjacencyMatrix();
-    size_t v = graph.getVertices();
-    for (size_t i = 0; i < v; i++)
+    for (size_t i = 0; i < V; i++)
     {
-        // If the vertex is not visited, then recur for it.
-        if (!visited[i])
-        {
-            // Recur for the adjacent vertices.
-            DFSIsConnected(graph, i, visited);
-        }
+       if (adjMat[src][i])
+       {
+              if (!visited[i])
+              {
+                DFSIsConnected(adjMat, i, visited);
+              }
+         
+       }
     }
 }
 
@@ -218,64 +268,74 @@ void Algorithms::floydWarshall(vector<vector<int>> &allDistances, vector<vector<
     }
 }
 
-bool Algorithms::DFSIsContainsCycleDirected(Graph &graph, size_t v, vector<bool> &visited, vector<bool> &recStack)
+bool Algorithms::DFSIsContainsCycleDirected(Graph &graph, size_t v, vector<bool> &visited, vector<bool> &recStack, string &cycle)
 {
+    // Mark the current node as visited and part of the recursion stack.
     if (!visited[v])
     {
-        // Mark the current node as visited and part of the recursion stack.
         visited[v] = true;
         recStack[v] = true;
-
+        
         // Recur for all the vertices adjacent to this vertex.
-        // vector<int>::iterator i;
         vector<vector<int>> adjancencyMatrix = graph.getAdjacencyMatrix();
-        size_t v = graph.getVertices();
-        for (size_t i = 0; i < v; i++)
+        size_t n = adjancencyMatrix[v].size();
+        for (size_t i = 0; i < n; i++)
         {
-            if (!visited[i] && DFSIsContainsCycleDirected(graph, i, visited, recStack))
+            if (adjancencyMatrix[v][i])
             {
-                return true;
-            }
-            else if (recStack[i])
-            {
-                return true;
+                if (!visited[i] && DFSIsContainsCycleDirected(graph, i, visited, recStack, cycle))
+                {
+                    cycle += "->" + to_string(v);
+                    return true;
+                }
+                else if (recStack[i])
+                {
+                    cycle += "->" +  to_string(i);
+                    return true;
+                }
             }
         }
     }
-
-    // Remove the vertex from the recursion stack.
     recStack[v] = false;
+    
     return false;
 }
 
-bool Algorithms::DFSIsContainsCycleUndirected(Graph &graph, size_t src, int parent, vector<bool> &visited)
+bool Algorithms::DFSIsContainsCycleUndirected(Graph &graph, size_t src, int parent, vector<bool> &visited, string &cycle, vector<int> &parentVec)
 {
     // Mark the current node as visited.
     visited[src] = true;
-
+    parentVec[src] = parent;
     // Recur for all the vertices adjacent to this vertex.
-    // vector<int>::iterator i;
     vector<vector<int>> adjancencyMatrix = graph.getAdjacencyMatrix();
-    size_t v = graph.getVertices();
-    for (size_t i = 0; i < v; i++)
+    size_t n = adjancencyMatrix[src].size();
+    for (size_t i = 0; i < n; i++)
     {
-        // If an adjacent is not visited, then recur for that adjacent.
-        if (!visited[i])
+        if (adjancencyMatrix[src][i] && !visited[i])
         {
-            if (DFSIsContainsCycleUndirected(graph, i, src, visited))
+            if (DFSIsContainsCycleUndirected(graph, i, src, visited, cycle, parentVec))
             {
                 return true;
             }
         }
         // If an adjacent is visited and not parent of the current vertex, then there is a cycle.
-        else if (i != parent)
+        else if (adjancencyMatrix[src][i] && i != parent)
         {
+            cycle = "The cycle is:" + to_string(i);
+            
+            
+            for (size_t j = src; j != i; j = static_cast<size_t> (parentVec[j]))
+            {
+                cycle += "->" + to_string(j);
+            }
+            cycle += "->" + to_string(i);
             return true;
         }
     }
 
     return false;
 }
+
 
 string Algorithms::paintGraph(Graph &graph, size_t c, vector<int> &color, size_t pos)
 {
@@ -319,13 +379,14 @@ string Algorithms::paintGraph(Graph &graph, size_t c, vector<int> &color, size_t
     return res;
 }
 
-bool Algorithms::BellmanFord(Graph &graph, size_t src, vector<int> &dist)
+bool Algorithms::BellmanFord(Graph &graph, size_t src, vector<int> &dist, string &cycle)
 {
-    int V = graph.getVertices();
+    size_t V = graph.getVertices();
     vector<vector<int>> adjancencyMatrix = graph.getAdjacencyMatrix();
     // Initialize the distance from the source to itself as 0.
     dist[src] = 0;
-
+    // Create to store the parent of each vertex.
+    
     // Relax all edges |V| - 1 times.
     // A simple shortest path from src to any other vertex can have at-most |V| - 1 edges.
     for (size_t i = 0; i < V - 1; i++)
@@ -338,6 +399,7 @@ bool Algorithms::BellmanFord(Graph &graph, size_t src, vector<int> &dist)
                 if (dist[u] != INF && dist[u] + adjancencyMatrix[u][v] < dist[v])
                 {
                     dist[v] = dist[u] + adjancencyMatrix[u][v];
+                    
                 }
             }
         }
@@ -351,6 +413,7 @@ bool Algorithms::BellmanFord(Graph &graph, size_t src, vector<int> &dist)
         {
             if (dist[u] != INF && dist[u] + adjancencyMatrix[u][v] < dist[v])
             {
+                
                 return true;
             }
         }
