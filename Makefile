@@ -18,6 +18,9 @@ SOURCES_DEMO=Graph.cpp Algorithms.cpp Demo.cpp
 # Object files for demo executable
 OBJECTS_DEMO=$(subst .cpp,.o,$(SOURCES_DEMO))
 
+# doctest flags 
+DOCTEST_FLAGS=-std=c++11 -I doctest
+
 all: demo test
 
 run: demo
@@ -30,7 +33,7 @@ test: TestCounter.o Test.o $(OBJECTS_TEST)
 	$(CXX) $(CXXFLAGS) $^ -o test
 
 tidy:
-	clang-tidy $(SOURCES) -checks=bugprone-*,clang-analyzer-*,cppcoreguidelines-*,performance-*,portability-*,readability-*,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-owning-memory --warnings-as-errors=-* --
+	clang-tidy $(SOURCES_TEST) -checks=bugprone-*,clang-analyzer-*,cppcoreguidelines-*,performance-*,portability-*,readability-*,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-owning-memory --warnings-as-errors=-* --
 
 valgrind: demo test
 	valgrind --tool=memcheck $(VALGRIND_FLAGS) ./demo 2>&1 | { egrep "lost| at " || true; }

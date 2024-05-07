@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <bits/stdc++.h>
 #include "Algorithms.hpp"
 #include "Graph.hpp"
 using namespace std;
@@ -208,18 +209,52 @@ string Algorithms::isBipartite(Graph &graph)
 
 string Algorithms::negativeCycle(Graph &graph)
 {
-    // Create a distance matrix.
-    size_t V = graph.getVertices();
-    vector<int> dist(V, INF);
-    string cycle = "The negative cycle is:";
+    vector<vector<int>> adjacencyMatrix = graph.getAdjacencyMatrix();
+    vector<int>::size_type n = adjacencyMatrix.size();
+    vector<int>::size_type i, j;
 
-    // call BellmanFord function to check if there is a negative cycle
-    if (BellmanFord(graph, 0, dist, cycle))
+    // Create a distance matrix and a next matrix.
+    vector<vector<int>> dist(n, vector<int>(n, 0));
+    vector<vector<int>> next(n, vector<int>(n, 0));
+    // Initialize the distance matrix.
+    for (i = 0; i < n; i++)
     {
-        cout << "The graph contains a negative cycle." << endl;
-        return cycle;
+        for (j = 0; j < n; j++)
+        {
+            // If there is no edge between the vertices, set the distance to infinity.
+            if (adjacencyMatrix[i][j] == 0)
+            {
+                dist[i][j] = INF;
+                next[i][j] = -1;
+            }
+            else
+            {
+                dist[i][j] = adjacencyMatrix[i][j];
+                // Set the next matrix.
+                next[i][j] = j;
+            }
+        }
     }
-
+    // Floyd-Warshall algorithm.
+    floydWarshall(dist, next);
+    
+    // Reconstruct the path.
+    string cycle = "The negative cycle is:";
+    for (size_t i = 0; i < n; i++)
+    {
+        // Check if there is a negative cycle.
+        if (dist[i][i] < 0)
+        {
+            size_t u = i;
+            do
+            {
+                cycle += to_string(u) + "->";
+                u = static_cast<size_t>(next[u][i]);
+            } while (u != i);
+            cycle += to_string(i);
+            return cycle;
+        }
+    }
     return "The graph does not contain a negative cycle.";
 }
 
@@ -379,44 +414,7 @@ string Algorithms::paintGraph(Graph &graph, size_t c, vector<int> &color, size_t
     return res;
 }
 
-bool Algorithms::BellmanFord(Graph &graph, size_t src, vector<int> &dist, string &cycle)
-{
-    size_t V = graph.getVertices();
-    vector<vector<int>> adjancencyMatrix = graph.getAdjacencyMatrix();
-    // Initialize the distance from the source to itself as 0.
-    dist[src] = 0;
-    // Create to store the parent of each vertex.
-    
-    // Relax all edges |V| - 1 times.
-    // A simple shortest path from src to any other vertex can have at-most |V| - 1 edges.
-    for (size_t i = 0; i < V - 1; i++)
-    {
-        for (size_t u = 0; u < V; u++)
-        {
-            for (size_t v = 0; v < V; v++)
-            {
 
-                if (dist[u] != INF && dist[u] + adjancencyMatrix[u][v] < dist[v])
-                {
-                    dist[v] = dist[u] + adjancencyMatrix[u][v];
-                    
-                }
-            }
-        }
-    }
 
-    // Check for negative-weight cycles. The above step guarantees the shortest distance if there is no negative cycle.
-    // If we get a shorter path, then there is a cycle.
-    for (size_t u = 0; u < V; u++)
-    {
-        for (size_t v = 0; v < V; v++)
-        {
-            if (dist[u] != INF && dist[u] + adjancencyMatrix[u][v] < dist[v])
-            {
-                
-                return true;
-            }
-        }
-    }
-    return false;
-}
+
+

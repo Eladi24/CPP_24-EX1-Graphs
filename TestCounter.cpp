@@ -22,6 +22,8 @@ struct ReporterCounter : public ConsoleReporter
             std::cout << "Please write at least " << MIN_TESTS << " tests! " << std::endl;
             return_code = 1;
         }
+        // Print test run summary
+        ConsoleReporter::test_run_end(run_stats);
     }
 };
 
@@ -31,6 +33,8 @@ int main(int argc, char **argv)
 {
     Context context;
     context.addFilter("reporters", "counter");
+    // apply the command line for flags
+    context.applyCommandLine(argc, argv); 
     context.run();
     return return_code;
 }

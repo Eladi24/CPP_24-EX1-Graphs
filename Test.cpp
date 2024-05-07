@@ -100,4 +100,33 @@ TEST_CASE("Test invalid graph")
         {0, 0, 4, 0},
         {0, 0, 0, 5}};
     CHECK_THROWS(g.loadGraph(graph));
+    
+   // 4x5 matrix that reprsents invalid graph.
+    vector<vector<int>> graph2 = {
+        {0, 1, 2, 0, 0},
+        {1, 0, 3, 0, 0},
+        {2, 3, 0, 4, 0},
+        {0, 0, 4, 0, 0}};
+    CHECK_THROWS(g.loadGraph(graph2));
+
+    // 4x3 matrix that reprsents invalid graph.
+    vector<vector<int>> graph3 = {
+        {0, 1, 2},
+        {1, 0, 3},
+        {2, 3, 0},
+        {0, 0, 4}};
+    CHECK_THROWS(g.loadGraph(graph3));
+}
+
+TEST_CASE("Test negativeCycle")
+{
+    ariel::Graph g;
+    // 4x4 matrix that represents a graph with a negative cycle.
+    vector<vector<int>> graph = {
+        {0, 0, 0, 0},
+        {4, 0, -6, 0},
+        {0, 0, 0, 5},
+        {0, -2, 0, 0}};
+        g.loadGraph(graph);
+        CHECK(ariel::Algorithms::negativeCycle(g) == "The negative cycle is:1->2->3->1");
 }

@@ -113,7 +113,6 @@ int main()
     g.printGraph();                                     // Should print: "Graph with 4 vertices and 4 edges."
     cout << Algorithms::isConnected(g) << endl;        // Should print: "1" (true).
     cout << Algorithms::shortestPath(g, 0, 3) << endl; // Should print: "-1 there's no path between 0 and 3."
-    cout << Algorithms::isContainsCycle(g) << endl;
     cout << Algorithms::isBipartite(g) << endl;        // Should print: "0" (false).
     cout << Algorithms::negativeCycle(g) << endl;      // Should print: "The graph contains a negative cycle: 1->2->3->1."
 
