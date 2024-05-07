@@ -142,4 +142,18 @@ int main()
     cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "The cycle is:0->3->2->1->0"
     cout << Algorithms::isBipartite(g) << endl;        // Should print: "The graph is bipartite: A={0, 2}, B={1, 3}"  
     cout << Algorithms::negativeCycle(g) << endl;      // Should print: "0" (false).
+
+    vector <vector<int>> graph10 = {
+        {0, 1, 0, 0, 0},
+        {0, 0, 2, 0, 0},
+        {0, 0, 0, 3, 0},
+        {0, 0, 0, 0, -3},
+        {-3, 0, 0, 0, 0}};
+    g.loadGraph(graph10);
+    g.printGraph();                                     // Should print: "Graph with 5 vertices and 5 edges."
+    cout << Algorithms::isConnected(g) << endl;        // Should print: "1" (true).
+    cout << Algorithms::shortestPath(g, 0, 4) << endl; // Should print: "0->1->2->3->4."
+    cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "0" (false).
+    cout << Algorithms::isBipartite(g) << endl;        // Should print: "0" (false).
+    cout << Algorithms::negativeCycle(g) << endl;      // Should print: "The graph contains a negative cycle: 4->0->1->2->3->4."
 }

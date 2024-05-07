@@ -127,6 +127,93 @@ TEST_CASE("Test negativeCycle")
         {4, 0, -6, 0},
         {0, 0, 0, 5},
         {0, -2, 0, 0}};
-        g.loadGraph(graph);
-        CHECK(ariel::Algorithms::negativeCycle(g) == "The negative cycle is:1->2->3->1");
+    g.loadGraph(graph);
+    CHECK(ariel::Algorithms::negativeCycle(g) == "The negative cycle is:1->2->3->1");
+
+    vector<vector<int>> graph2 = {
+        {0, 1, 0, 0},
+        {0, 0, -1, 0},
+        {0, 0, 0, -1},
+        {-1, 0, 0, 0}};
+    g.loadGraph(graph2);
+    CHECK(ariel::Algorithms::negativeCycle(g) == "The negative cycle is:0->1->2->3->0");
+
+    vector <vector<int>> graph3 = {
+        {0, 1, 0, 6},
+        {4, 0, 6, 0},
+        {0, 0, 0, 0},
+        {0, 2, 0, 0}};
+    g.loadGraph(graph3);
+    CHECK(ariel::Algorithms::negativeCycle(g) == "The graph does not contain a negative cycle");
+
+    vector <vector<int>> graph4 = {
+        {0, 1, 0, 0, 0},
+        {0, 0, 1, 0, 0},
+        {0, 0, 0, 3, 0},
+        {0, 0, 0, 0, -3},
+        {-3, 0, 0, 0, 0}};
+    g.loadGraph(graph4);
+    CHECK(ariel::Algorithms::negativeCycle(g) == "The negative cycle is:0->1->2->3->4->0");
+}
+
+TEST_CASE ("isDirected")
+{
+    ariel::Graph g;
+    vector<vector<int>> graph = {
+        {0, 1, 1, 0},
+        {0, 0, 1, 0},
+        {1, 0, 0, 1},
+        {1, 0, 0, 0}};
+    g.loadGraph(graph);
+    CHECK(g.isDirected() == true);
+
+vector<vector<int>> graph2 = {
+        {0, 1, 2, 0, 0},
+        {1, 0, 3, 0, 0},
+        {2, 3, 0, 4, 0},
+        {0, 0, 4, 0, 5},
+        {0, 0, 0, 5, 0}};
+    g.loadGraph(graph2);
+    CHECK(g.isDirected() == false);
+
+    vector<vector<int>> graph3 = {
+        {0, 0, 0, 0},
+        {4, 0, -6, 0},
+        {0, 0, 0, 5},
+        {0, -2, 0, 0}};
+    g.loadGraph(graph3);
+    CHECK(g.isDirected() == true);
+}
+
+TEST_CASE("Test getTranspose")
+{
+    ariel::Graph g;
+    vector<vector<int>> graph = {
+        {0, 1, 1, 0},
+        {0, 0, 1, 0},
+        {1, 0, 0, 1},
+        {1, 0, 0, 0}};
+   vector<vector<int>> transpose = {
+        {0, 0, 1, 1},
+        {1, 0, 0, 0},
+        {1, 1, 0, 0},
+        {0, 0, 1, 0}};
+    g.loadGraph(graph);
+    CHECK(g.getTranspose() == transpose);
+
+    vector<vector<int>> graph2 = {
+        {0, 1, 2, 0, 0},
+        {1, 0, 3, 0, 0},
+        {2, 3, 0, 4, 0},
+        {0, 0, 4, 0, 5},
+        {0, 0, 0, 5, 0}};
+    vector<vector<int>> transpose2 = {
+        {0, 1, 2, 0, 0},
+        {1, 0, 3, 0, 0},
+        {2, 3, 0, 4, 0},
+        {0, 0, 4, 0, 5},
+        {0, 0, 0, 5, 0}};
+    g.loadGraph(graph2);
+    CHECK(g.getTranspose() == transpose2);
+
 }

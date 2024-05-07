@@ -255,7 +255,7 @@ string Algorithms::negativeCycle(Graph &graph)
             return cycle;
         }
     }
-    return "The graph does not contain a negative cycle.";
+    return "The graph does not contain a negative cycle";
 }
 
 void Algorithms::DFSIsConnected(vector<vector<int>> &adjMat, size_t src, vector<bool> &visited)
