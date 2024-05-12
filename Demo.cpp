@@ -1,3 +1,6 @@
+// ID: 205739907
+// Email: eladima66@gmail.com
+
 /*
  * Demo program for Exercise 2.
  * Author: Benjamin Saldman.
@@ -22,7 +25,7 @@ int main()
         {0, 1, 0}};
     g.loadGraph(graph); // Load the graph to the object.
 
-    g.printGraph();                                    // Should print: "Graph with 3 vertices and 4 edges."
+    g.printGraph();                                    // Should print: "Graph with 3 vertices and 2 edges."
     cout << Algorithms::isConnected(g) << endl;        // Should print: "1" (true).
     cout << Algorithms::shortestPath(g, 0, 2) << endl; // Should print: 0->1->2.
     cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "0" (false).
@@ -38,7 +41,7 @@ int main()
 
     g.loadGraph(graph2); // Load the graph to the object.
 
-    g.printGraph();                                    // Should print: "Graph with 5 vertices and 8 edges."
+    g.printGraph();                                    // Should print: "Graph with 5 vertices and 4 edges."
     cout << Algorithms::isConnected(g) << endl;        // Should print: "0" (false).
     cout << Algorithms::shortestPath(g, 0, 4) << endl; // Should print: "-1" (there is no path between 0 and 4).
     cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "The cycle is: 0->1->2->0".
@@ -53,7 +56,7 @@ int main()
         {0, 0, 0, 5, 0}};
     g.loadGraph(graph3); // Load the graph to the object.
 
-    g.printGraph();                                    // Should print: "Graph with 5 vertices and 10 edges."
+    g.printGraph();                                    // Should print: "Graph with 5 vertices and 4 edges."
     cout << Algorithms::isConnected(g) << endl;        // Should print: "1" (true).
     cout << Algorithms::shortestPath(g, 0, 4) << endl; // Should print: 0->2->3->4.
     cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "0" (false).
@@ -82,12 +85,11 @@ int main()
         {1, 0, 0, 1},
         {1, 0, 0, 0}};
     g.loadGraph(graph5);
-    g.printGraph();                                     // Should print: "Graph with 4 vertices and 6 edges."
+    g.printGraph();                                    // Should print: "Graph with 4 vertices and 6 edges."
     cout << Algorithms::isConnected(g) << endl;        // Should print: "1" (true).
     cout << Algorithms::shortestPath(g, 0, 3) << endl; // Should print: 0->1->2->3.
     cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "The cycle is: 0->1->2->0".
     cout << Algorithms::isBipartite(g) << endl;        // Should print: "0" (false).
-
 
     // 4x4 matrix that reprsents a non-connected directed graph.
     vector<vector<int>> graph6 = {
@@ -96,7 +98,7 @@ int main()
         {0, 0, 0, 1},
         {0, 0, 0, 0}};
     g.loadGraph(graph6);
-    g.printGraph();                                     // Should print: "Graph with 4 vertices and 4 edges."
+    g.printGraph();                                    // Should print: "Graph with 4 vertices and 4 edges."
     cout << Algorithms::isConnected(g) << endl;        // Should print: "0" (false).
     cout << Algorithms::shortestPath(g, 0, 3) << endl; // Should print: 0->2->3.
     cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "0" (false).
@@ -110,7 +112,7 @@ int main()
         {0, 0, 0, 5},
         {0, -2, 0, 0}};
     g.loadGraph(graph7);
-    g.printGraph();                                     // Should print: "Graph with 4 vertices and 4 edges."
+    g.printGraph();                                    // Should print: "Graph with 4 vertices and 4 edges."
     cout << Algorithms::isConnected(g) << endl;        // Should print: "1" (true).
     cout << Algorithms::shortestPath(g, 0, 3) << endl; // Should print: "-1 there's no path between 0 and 3."
     cout << Algorithms::isBipartite(g) << endl;        // Should print: "0" (false).
@@ -123,37 +125,48 @@ int main()
         {0, 0, 4, 0, 5},
         {0, 0, 0, 5, 0}};
     g.loadGraph(graph8);
-    g.printGraph();                                     // Should print: "Graph with 5 vertices and 10 edges."
+    g.printGraph();                                    // Should print: "Graph with 5 vertices and 10 edges."
     cout << Algorithms::isConnected(g) << endl;        // Should print: "1" (true).
     cout << Algorithms::shortestPath(g, 0, 4) << endl; // Should print: 0->2->3->4.
     cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "0" (false).
     cout << Algorithms::isBipartite(g) << endl;        // Should print: "0 (false)".
     cout << Algorithms::negativeCycle(g) << endl;      // Should print: "0" (false).
 
-    vector <vector<int>> graph9 = {
+    vector<vector<int>> graph9 = {
         {0, 1, 0, 1},
         {1, 0, 1, 0},
         {0, 1, 0, 1},
         {1, 0, 1, 0}};
     g.loadGraph(graph9);
-    g.printGraph();                                     // Should print: "Graph with 4 vertices and 4 edges."
+    g.printGraph();                                    // Should print: "Graph with 4 vertices and 4 edges."
     cout << Algorithms::isConnected(g) << endl;        // Should print: "1" (true).
     cout << Algorithms::shortestPath(g, 0, 3) << endl; // Should print: "0->3."
     cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "The cycle is:0->3->2->1->0"
-    cout << Algorithms::isBipartite(g) << endl;        // Should print: "The graph is bipartite: A={0, 2}, B={1, 3}"  
+    cout << Algorithms::isBipartite(g) << endl;        // Should print: "The graph is bipartite: A={0, 2}, B={1, 3}"
     cout << Algorithms::negativeCycle(g) << endl;      // Should print: "0" (false).
 
-    vector <vector<int>> graph10 = {
+    vector<vector<int>> graph10 = {
         {0, 1, 0, 0, 0},
         {0, 0, 2, 0, 0},
         {0, 0, 0, 3, 0},
         {0, 0, 0, 0, -3},
         {-3, 0, 0, 0, 0}};
     g.loadGraph(graph10);
-    g.printGraph();                                     // Should print: "Graph with 5 vertices and 5 edges."
+    g.printGraph();                                    // Should print: "Graph with 5 vertices and 5 edges."
     cout << Algorithms::isConnected(g) << endl;        // Should print: "1" (true).
     cout << Algorithms::shortestPath(g, 0, 4) << endl; // Should print: "0->1->2->3->4."
-    cout << Algorithms::isContainsCycle(g) << endl;    // Should print: "0" (false).
-    cout << Algorithms::isBipartite(g) << endl;        // Should print: "0" (false).
-    cout << Algorithms::negativeCycle(g) << endl;      // Should print: "The graph contains a negative cycle: 4->0->1->2->3->4."
+
+    cout << Algorithms::isBipartite(g) << endl;   // Should print: "0" (false).
+    cout << Algorithms::negativeCycle(g) << endl; // Should print: "The graph contains a negative cycle: 4->0->1->2->3->4."
+
+    vector<vector<int>> graph11 = {
+        {0, 1, 0, 0},
+        {0, 0, 1, 0},
+        {0, 0, 0, 1},
+        {0, 0, 0, 0}};
+    g.loadGraph(graph11);
+    g.printGraph();                                    // Should print: "Graph with 4 vertices and 3 edges."
+    cout << Algorithms::isConnected(g) << endl;        // Should print: "0" (false).
+    cout << Algorithms::shortestPath(g, 0, 3) << endl; // Should print: "0->1->2->3."
+    cout << Algorithms::isBipartite(g) << endl;        // Should print: "The graph is bipartite: A={0, 2}, B={1, 3}"
 }

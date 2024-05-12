@@ -1,3 +1,6 @@
+// ID: 205739907
+// Email: eladima66@gmail.com
+
 #include "doctest.h"
 #include "Algorithms.hpp"
 #include "Graph.hpp"
@@ -22,6 +25,15 @@ TEST_CASE("Test isConnected")
         {0, 0, 0, 0, 0}};
     g.loadGraph(graph2);
     CHECK(ariel::Algorithms::isConnected(g) == false);
+
+    vector <vector<int>> graph3 = {
+        {0, 1, 0, 0, 0},
+        {0, 0, 2, 0, 0},
+        {0, 0, 0, 3, 0},
+        {0, 0, 0, 0, -3},
+        {-3, 0, 0, 0, 0}};
+    g.loadGraph(graph3);
+    CHECK(ariel::Algorithms::isConnected(g) == true);
 }
 
 TEST_CASE("Test shortestPath")
@@ -42,6 +54,7 @@ TEST_CASE("Test shortestPath")
         {0, 0, 0, 0, 0}};
     g.loadGraph(graph2);
     CHECK(ariel::Algorithms::shortestPath(g, 0, 4) == "-1");
+
 }
 TEST_CASE("Test isContainsCycle")
 {
@@ -61,6 +74,23 @@ TEST_CASE("Test isContainsCycle")
         {0, 0, 0, 0, 0}};
     g.loadGraph(graph2);
     CHECK(ariel::Algorithms::isContainsCycle(g) == true);
+
+    // 4x4 matrix that reprsents a connected directed graph with a negative edges. should throw exception.
+    vector<vector<int>> graph3 = {
+        {0, 0, 0, 0},
+        {4, 0, -6, 0},
+        {0, 0, 0, 5},
+        {0, -2, 0, 0}};
+    g.loadGraph(graph3);
+    CHECK_THROWS(ariel::Algorithms::isContainsCycle(g));
+    // 4x4 matrix that reprsents a connected undirected graph with a negative edges. should throw exception.
+    vector<vector<int>> graph4 = {
+        {0, 4, 0, 0},
+        {4, 0, -6, -2},
+        {0, -6, 0, 5},
+        {0, -2, 5, 0}};
+    g.loadGraph(graph4);
+    CHECK_THROWS(ariel::Algorithms::isContainsCycle(g));
 }
 TEST_CASE("Test isBipartite")
 {
@@ -89,7 +119,16 @@ TEST_CASE("Test isBipartite")
         {0, 0, 0, 5, 0}};
     g.loadGraph(graph3);
     CHECK(ariel::Algorithms::isBipartite(g) == "The graph is bipartite: A={0, 2, 4}, B={1, 3}");
+    
+    vector<vector<int>> graph4 = { 
+        { 0, -1, 0, 1 },
+        { 1, 0, 1, 0 },
+        { 0, -1, 0, 1 },
+        { 1, 0, 1, 0 } };
+    g.loadGraph(graph4);
+    CHECK(ariel::Algorithms::isBipartite(g) == "The graph is bipartite: A={0, 2}, B={1, 3}");
 }
+
 TEST_CASE("Test invalid graph")
 {
     ariel::Graph g;
@@ -215,5 +254,33 @@ TEST_CASE("Test getTranspose")
         {0, 0, 0, 5, 0}};
     g.loadGraph(graph2);
     CHECK(g.getTranspose() == transpose2);
+}
 
+TEST_CASE("Test countEdges")
+{
+    ariel::Graph g;
+    vector<vector<int>> graph = {
+        {0, 1, 1, 0},
+        {0, 0, 1, 0},
+        {1, 0, 0, 1},
+        {1, 0, 0, 0}};
+    g.loadGraph(graph);
+    CHECK(g.countEdges() == 6);
+
+    vector<vector<int>> graph2 = {
+        {0, 1, 2, 0, 0},
+        {1, 0, 3, 0, 0},
+        {2, 3, 0, 4, 0},
+        {0, 0, 4, 0, 5},
+        {0, 0, 0, 5, 0}};
+    g.loadGraph(graph2);
+    CHECK(g.countEdges() == 5);
+
+    vector<vector<int>> graph3 = {
+        {0, 0, 0, 0},
+        {4, 0, -6, 0},
+        {0, 0, 0, 5},
+        {0, -2, 0, 0}};
+    g.loadGraph(graph3);
+    CHECK(g.countEdges() == 4);
 }

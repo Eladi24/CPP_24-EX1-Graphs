@@ -1,3 +1,6 @@
+// ID: 205739907
+// Email: eladima66@gmail.com
+
 #ifndef _ALGORITHMS_HPP_
 #define _ALGORITHMS_HPP_
 #include <iostream>
@@ -62,7 +65,8 @@ namespace ariel
         */
         static string negativeCycle(Graph &graph);
 
-        /*
+    private:
+         /*
         * @brief
         * This function solves all-pairs shortest path, using Floyd-Warshall algorithm.
         * The function returns the shortest path between all pairs of vertices.
@@ -114,9 +118,7 @@ namespace ariel
         * @return string the two disjoint sets if the graph is bipartite, "Graph is not bipartite" otherwise.
         */
        static string paintGraph(Graph &graph, size_t c, vector<int> &color, size_t pos); 
-
-     
-
+       
     };
     
 } // namespace ariel
