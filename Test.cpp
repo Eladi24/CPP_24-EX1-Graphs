@@ -4,6 +4,7 @@
 #include "doctest.h"
 #include "Algorithms.hpp"
 #include "Graph.hpp"
+#include <sstream>
 
 using namespace std;
 
@@ -283,4 +284,36 @@ TEST_CASE("Test countEdges")
         {0, -2, 0, 0}};
     g.loadGraph(graph3);
     CHECK(g.countEdges() == 4);
+}
+
+TEST_CASE("Test printGraph")
+{
+    ariel::Graph g;
+    ostringstream os; // Create an output string stream.
+    streambuf *coutbuf = cout.rdbuf(); // Save the old buffer.
+    cout.rdbuf(os.rdbuf()); // Redirect cout to the output string stream.
+    vector<vector<int>> graph = {
+        {0, 1, 1, 0},
+        {0, 0, 1, 0},
+        {1, 0, 0, 1},
+        {1, 0, 0, 0}};
+    g.loadGraph(graph);
+    g.printGraph();
+    cout.rdbuf(coutbuf); // Reset cout to the old buffer.
+    CHECK(os.str() == "Graph with 4 vertices and 6 edges.\n");
+
+    ostringstream os2; // Create an output string stream.
+    streambuf *coutbuf2 = cout.rdbuf(); // Save the old buffer.
+    cout.rdbuf(os2.rdbuf()); // Redirect cout to the output string stream.
+    vector<vector<int>> graph2 = {
+        {0, 1, 2, 0, 0},
+        {1, 0, 3, 0, 0},
+        {2, 3, 0, 4, 0},
+        {0, 0, 4, 0, 5},
+        {0, 0, 0, 5, 0}};
+    g.loadGraph(graph2);
+    g.printGraph();
+    cout.rdbuf(coutbuf2); // Reset cout to the old buffer.
+    CHECK(os2.str() == "Graph with 5 vertices and 5 edges.\n");
+   
 }
